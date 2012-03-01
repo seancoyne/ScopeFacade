@@ -16,7 +16,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitSession() {
 		variables.scopefacade = variables.scopefacade.init("session");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,session);
@@ -24,7 +24,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitApplication() {
 		variables.scopefacade = variables.scopefacade.init("application");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,application);
@@ -32,7 +32,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitServer() {
 		variables.scopefacade = variables.scopefacade.init("server");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,server);
@@ -40,7 +40,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitRequest() {
 		variables.scopefacade = variables.scopefacade.init("request");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,request);
@@ -48,7 +48,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitSessionSubkey() {
 		variables.scopefacade = variables.scopefacade.init("session.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,session.test);
@@ -56,7 +56,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitApplicationSubkey() {
 		variables.scopefacade = variables.scopefacade.init("application.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,application.test);
@@ -64,7 +64,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitServerSubkey() {
 		variables.scopefacade = variables.scopefacade.init("server.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,server.test);
@@ -72,7 +72,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function testInitRequestSubkey() {
 		variables.scopefacade = variables.scopefacade.init("request.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
 		makePublic(variables.scopefacade,"getScope");
 		var scope = variables.scopefacade.getScope();
 		assertSame(scope,request.test);
