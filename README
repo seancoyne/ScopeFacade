@@ -11,4 +11,6 @@ call init() with the name of the scope you want to abstract.  you can also use s
  	init("session");  // this would abstract the entire session scope
  	init("session.userinfo"); // this would abstract only the "userinfo" key of the session scope;
 
-You can abstract the Application, Session, Server, or Request scopes
+You can abstract the Application, Session, Server, or Request scopes.
+
+I have included a cfscript version as well as a tag based version.
