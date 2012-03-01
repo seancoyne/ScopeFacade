@@ -1,1 +1,14 @@
-This file was created by IntelliJ IDEA (Nika.1) IU-114.243 for binding GitHub repository
+Scope Facade
+Author: Sean Coyne (http://n42designs.com)
+Copyright 2012 and Beyond.  All Rights Reserved.
+
+A simple ColdFusion facade to abstract a shared scope (session, application, server, request).
+
+Useful in applications where you do not want to directly access the shared scope from services.
+
+call init() with the name of the scope you want to abstract.  you can also use subkeys of a scope.
+ examples:
+ 	init("session");  // this would abstract the entire session scope
+ 	init("session.userinfo"); // this would abstract only the "userinfo" key of the session scope;
+
+You can abstract the Application, Session, Server, or Request scopes
