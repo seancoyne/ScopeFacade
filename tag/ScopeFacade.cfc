@@ -70,5 +70,20 @@
 			<cfreturn structKeyExists(getScope(),arguments.key) />
 		</cflock>
 	</cffunction>
+
+	<cffunction name="param" returntype="void" output="false" access="public">
+		<cfargument name="key" required="true" type="string" />
+		<cfargument name="type" required="false" type="string" default="any" />
+		<cfargument name="defaultValue" required="false" />
+
+		<cfset var args = { name = variables.instance.scopename & "." & arguments.key, type = arguments.type } />
+
+		<cfif structKeyExists(arguments,"defaultValue")>
+			<cfset args.default = arguments.defaultValue />
+		</cfif>
+
+		<cfparam attributeCollection="#args#" />
+
+	</cffunction>
 	
 </cfcomponent>

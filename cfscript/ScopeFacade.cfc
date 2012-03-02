@@ -62,5 +62,14 @@ component {
 			return structKeyExists(getScope(),arguments.key);
 		}
 	}
-	
+
+	public void function param(string key, string type = "any", any defaultValue) {
+		if (structKeyExists(arguments,"defaultValue")) {
+			param name="#variables.instance.scopename#.#arguments.key#" type="#arguments.type#" default="#arguments.defaultValue#";
+		} else {
+			param name="#variables.instance.scopename#.#arguments.key#" type="#arguments.type#";
+		}
+
+	}
+
 }

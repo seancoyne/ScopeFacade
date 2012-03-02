@@ -367,6 +367,88 @@ component extends="mxunit.framework.TestCase" {
 		variables.scopefacade.delete("test");
 		assertFalse(structKeyExists(request.test,"test"));
 	}
-	
-	
+
+	// Param
+
+	public void function testParamSession() {
+		variables.scopefacade = variables.scopefacade.init("session");
+		session.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(session,"test") && session.test eq 1);
+		structDelete(session,"test");
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(session,"test") && session.test eq 2);
+	}
+
+	public void function testParamSessionSubkey() {
+		variables.scopefacade = variables.scopefacade.init("session.test");
+		session.test.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(session.test,"test") && session.test.test eq 1);
+		structDelete(session.test,"test");
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(session.test,"test") && session.test.test eq 2);
+	}
+
+	public void function testParamApplication() {
+		variables.scopefacade = variables.scopefacade.init("application");
+		application.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(application,"test") && application.test eq 1);
+		structDelete(application,"test");
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(application,"test") && application.test eq 2);
+	}
+
+	public void function testParamApplicationSubkey() {
+		variables.scopefacade = variables.scopefacade.init("application.test");
+		application.test.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(application.test,"test") && application.test.test eq 1);
+		structDelete(application.test,"test");
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(application.test,"test") && application.test.test eq 2);
+	}
+
+	public void function testParamServer() {
+		variables.scopefacade = variables.scopefacade.init("server");
+		server.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(server,"test") && server.test eq 1);
+		structDelete(server,"test");
+		variables.scopefacade.param("test","numeric",2);
+		debug(server);
+		assertTrue(structKeyExists(server,"test") && server.test eq 2);
+	}
+
+	public void function testParamServerSubkey() {
+		variables.scopefacade = variables.scopefacade.init("server.test");
+		server.test.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(server.test,"test") && server.test.test eq 1);
+		structDelete(server.test,"test");
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(server.test,"test") && server.test.test eq 2);
+	}
+
+	public void function testParamRequest() {
+		variables.scopefacade = variables.scopefacade.init("request");
+		request.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(request,"test") && request.test eq 1);
+		structDelete(request,"test");
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(request,"test") && request.test eq 2);
+	}
+
+	public void function testParamRequestSubkey() {
+		variables.scopefacade = variables.scopefacade.init("request.test");
+		request.test.test = 1;
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(request.test,"test") && request.test.test eq 1);
+		structDelete(request.test,"test");
+		variables.scopefacade.param("test","numeric",2);
+		assertTrue(structKeyExists(request.test,"test") && request.test.test eq 2);
+	}
+
 }
