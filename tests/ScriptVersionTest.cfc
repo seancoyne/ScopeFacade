@@ -2,6 +2,7 @@ component extends="mxunit.framework.TestCase" {
 	
 	public void function setUp() {
 		variables.scopefacade = createObject("component","ScopeFacade.cfscript.ScopeFacade");
+		scope_data = ["session","application","request","server"];
 	}
 	
 	public void function tearDown() {
@@ -12,443 +13,193 @@ component extends="mxunit.framework.TestCase" {
 		structDelete(variables,"scopefacade");
 	}
 	
-	// Init & GetScope
-	
-	public void function testInitSession() {
-		variables.scopefacade = variables.scopefacade.init("session");
+	// Init
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testInit(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
 		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
-		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,session);
 	}
-	
-	public void function testInitApplication() {
-		variables.scopefacade = variables.scopefacade.init("application");
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testInitSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
 		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
-		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,application);
 	}
-	
-	public void function testInitServer() {
-		variables.scopefacade = variables.scopefacade.init("server");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+
+	// GetScope
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testGetScope(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
 		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,server);
+		var s = variables.scopefacade.getScope();
+		assertSame(s,structGet(arguments.scope));
 	}
-	
-	public void function testInitRequest() {
-		variables.scopefacade = variables.scopefacade.init("request");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testGetScopeSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
 		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,request);
+		var s = variables.scopefacade.getScope();
+		assertSame(s,structGet(arguments.scope & ".test"));
 	}
-	
-	public void function testInitSessionSubkey() {
-		variables.scopefacade = variables.scopefacade.init("session.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
-		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,session.test);
-	}
-	
-	public void function testInitApplicationSubkey() {
-		variables.scopefacade = variables.scopefacade.init("application.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
-		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,application.test);
-	}
-	
-	public void function testInitServerSubkey() {
-		variables.scopefacade = variables.scopefacade.init("server.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
-		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,server.test);
-	}
-	
-	public void function testInitRequestSubkey() {
-		variables.scopefacade = variables.scopefacade.init("request.test");
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.cfscript.ScopeFacade"));
-		makePublic(variables.scopefacade,"getScope");
-		var scope = variables.scopefacade.getScope();
-		assertSame(scope,request.test);
-	}
-	
+
 	// GetLockScope
-	
-	public void function testGetLockScopeSession() {
-		variables.scopefacade = variables.scopefacade.init("session");
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testGetLockScope(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
 		makePublic(variables.scopefacade,"getLockScope");
 		var result = variables.scopefacade.getLockScope();
-		assertEquals("session",result);
+		assertEquals(arguments.scope,result);
 	}
-	
-	public void function testGetLockScopeSessionSubkey() {
-		variables.scopefacade = variables.scopefacade.init("session.test");
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testGetLockScopeSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
 		makePublic(variables.scopefacade,"getLockScope");
 		var result = variables.scopefacade.getLockScope();
-		assertEquals("session",result);
+		assertEquals(arguments.scope,result);
 	}
-	
-	public void function testGetLockScopeApplication() {
-		variables.scopefacade = variables.scopefacade.init("application");
-		makePublic(variables.scopefacade,"getLockScope");
-		var result = variables.scopefacade.getLockScope();
-		assertEquals("application",result);
-	}
-	
-	public void function testGetLockScopeApplicationSubkey() {
-		variables.scopefacade = variables.scopefacade.init("application.test");
-		makePublic(variables.scopefacade,"getLockScope");
-		var result = variables.scopefacade.getLockScope();
-		assertEquals("application",result);
-	}
-	
-	public void function testGetLockScopeServer() {
-		variables.scopefacade = variables.scopefacade.init("server");
-		makePublic(variables.scopefacade,"getLockScope");
-		var result = variables.scopefacade.getLockScope();
-		assertEquals("server",result);
-	}
-	
-	public void function testGetLockScopeServerSubkey() {
-		variables.scopefacade = variables.scopefacade.init("server.test");
-		makePublic(variables.scopefacade,"getLockScope");
-		var result = variables.scopefacade.getLockScope();
-		assertEquals("server",result);
-	}
-	
-	public void function testGetLockScopeRequest() {
-		variables.scopefacade = variables.scopefacade.init("request");
-		makePublic(variables.scopefacade,"getLockScope");
-		var result = variables.scopefacade.getLockScope();
-		assertEquals("request",result);
-	}
-	
-	public void function testGetLockScopeRequestSubkey() {
-		variables.scopefacade = variables.scopefacade.init("request.test");
-		makePublic(variables.scopefacade,"getLockScope");
-		var result = variables.scopefacade.getLockScope();
-		assertEquals("request",result);
-	}
-	
+
 	// Get
-	
-	public void function testGetSession() {
-		variables.scopefacade = variables.scopefacade.init("session");
-		session.test = "1";
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testGet(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
+		var s = structGet(arguments.scope);
+		s.test = "1";
 		var result = variables.scopefacade.get("test");
-		assertEquals(result,session.test);
+		assertEquals(result,s.test);
 	}
-	
-	public void function testGetSessionSubkey() {
-		variables.scopefacade = variables.scopefacade.init("session.test");
-		session.test.test = "1";
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testGetSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
+		var s = structGet(arguments.scope);
+		s.test.test = "1";
 		var result = variables.scopefacade.get("test");
-		assertEquals(result,session.test.test);
+		assertEquals(result,s.test.test);
 	}
-	
-	public void function testGetApplication() {
-		variables.scopefacade = variables.scopefacade.init("application");
-		application.test = "1";
-		var result = variables.scopefacade.get("test");
-		assertEquals(result,application.test);
-	}
-	
-	public void function testGetApplicationSubkey() {
-		variables.scopefacade = variables.scopefacade.init("application.test");
-		application.test.test = "1";
-		var result = variables.scopefacade.get("test");
-		assertEquals(result,application.test.test);
-	}
-	
-	public void function testGetServer() {
-		variables.scopefacade = variables.scopefacade.init("server");
-		server.test = "1";
-		var result = variables.scopefacade.get("test");
-		assertEquals(result,server.test);
-	}
-	
-	public void function testGetServerSubkey() {
-		variables.scopefacade = variables.scopefacade.init("server.test");
-		server.test.test = "1";
-		var result = variables.scopefacade.get("test");
-		assertEquals(result,server.test.test);
-	}
-	
-	public void function testGetRequest() {
-		variables.scopefacade = variables.scopefacade.init("request");
-		request.test = "1";
-		var result = variables.scopefacade.get("test");
-		assertEquals(result,request.test);
-	}
-	
-	public void function testGetReqestSubkey() {
-		variables.scopefacade = variables.scopefacade.init("request.test");
-		request.test.test = "1";
-		var result = variables.scopefacade.get("test");
-		assertEquals(result,request.test.test);
-	}
-	
+
 	// Set
-	
-	public void function testSetSession() {
-		variables.scopefacade = variables.scopefacade.init("session");
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testSet(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
 		variables.scopefacade.set("Test",1);
-		assertEquals(1,session.test);
+		var s = structGet(arguments.scope);
+		assertEquals(1,s.test);
 	}
-	
-	public void function testSetSessionSubkey() {
-		variables.scopefacade = variables.scopefacade.init("session.test");
+
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testSetSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
 		variables.scopefacade.set("Test",1);
-		assertEquals(1,session.test.test);
+		var s = structGet(arguments.scope);
+		assertEquals(1,s.test.test);
 	}
-	
-	public void function testSetApplication() {
-		variables.scopefacade = variables.scopefacade.init("application");
-		variables.scopefacade.set("Test",1);
-		assertEquals(1,application.test);
-	}
-	
-	public void function testSetApplicationSubkey() {
-		variables.scopefacade = variables.scopefacade.init("application.test");
-		variables.scopefacade.set("Test",1);
-		assertEquals(1,application.test.test);
-	}
-	
-	public void function testSetServer() {
-		variables.scopefacade = variables.scopefacade.init("server");
-		variables.scopefacade.set("Test",1);
-		assertEquals(1,server.test);
-	}
-	
-	public void function testSetServerSubkey() {
-		variables.scopefacade = variables.scopefacade.init("server.test");
-		variables.scopefacade.set("Test",1);
-		assertEquals(1,server.test.test);
-	}
-	
-	public void function testSetRequest() {
-		variables.scopefacade = variables.scopefacade.init("request");
-		variables.scopefacade.set("Test",1);
-		assertEquals(1,request.test);
-	}
-	
-	public void function testSetRequestSubkey() {
-		variables.scopefacade = variables.scopefacade.init("request.test");
-		variables.scopefacade.set("Test",1);
-		assertEquals(1,request.test.test);
-	}
-	
+
 	// Exists
-	
-	public void function testExistsSession() {
-		variables.scopefacade = variables.scopefacade.init("session");
-		session.test = 1;
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testExists(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
+		var s = structGet(arguments.scope);
+		s.test = 1;
 		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(session,"test");
+		structDelete(s,"test");
 		assertFalse(variables.scopefacade.exists("test"));		
 	}
-	
-	public void function testExistsSessionSubkey() {
-		variables.scopefacade = variables.scopefacade.init("session.test");
-		session.test.test = 1;
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testExistsSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
+		var s = structGet(arguments.scope);
+		s.test.test = 1;
 		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(session,"test");
+		structDelete(s.test,"test");
 		assertFalse(variables.scopefacade.exists("test"));		
 	}
-	
-	public void function testExistsApplication() {
-		variables.scopefacade = variables.scopefacade.init("application");
-		application.test = 1;
-		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(application,"test");
-		assertFalse(variables.scopefacade.exists("test"));		
-	}
-	
-	public void function testExistsApplicationSubkey() {
-		variables.scopefacade = variables.scopefacade.init("application.test");
-		application.test.test = 1;
-		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(application,"test");
-		assertFalse(variables.scopefacade.exists("test"));		
-	}
-	
-	public void function testExistsServer() {
-		variables.scopefacade = variables.scopefacade.init("server");
-		server.test = 1;
-		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(server,"test");
-		assertFalse(variables.scopefacade.exists("test"));		
-	}
-	
-	public void function testExistsServerSubkey() {
-		variables.scopefacade = variables.scopefacade.init("server.test");
-		server.test.test = 1;
-		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(server,"test");
-		assertFalse(variables.scopefacade.exists("test"));		
-	}
-	
-	public void function testExistsRequest() {
-		variables.scopefacade = variables.scopefacade.init("request");
-		request.test = 1;
-		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(request,"test");
-		assertFalse(variables.scopefacade.exists("test"));		
-	}
-	
-	public void function testExistsRequestSubkey() {
-		variables.scopefacade = variables.scopefacade.init("request.test");
-		request.test.test = 1;
-		assertTrue(variables.scopefacade.exists("test"));
-		structDelete(request,"test");
-		assertFalse(variables.scopefacade.exists("test"));		
-	}
-	
+
 	// Delete
-	
-	public void function testDeleteSession() {
-		variables.scopefacade = variables.scopefacade.init("session");
-		session.test = 1;
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testDelete(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
+		var s = structGet(arguments.scope);
+		s.test = 1;
 		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(session,"test"));
+		assertFalse(structKeyExists(s,"test"));
 	}
-	
-	public void function testDeleteSessionSubkey() {
-		variables.scopefacade = variables.scopefacade.init("session.test");
-		session.test.test = 1;
+
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testDeleteSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
+		var s = structGet(arguments.scope);
+		s.test.test = 1;
 		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(session.test,"test"));
-	}
-	
-	public void function testDeleteApplication() {
-		variables.scopefacade = variables.scopefacade.init("application");
-		application.test = 1;
-		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(application,"test"));
-	}
-	
-	public void function testDeleteApplicationSubkey() {
-		variables.scopefacade = variables.scopefacade.init("application.test");
-		application.test.test = 1;
-		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(application.test,"test"));
-	}
-	
-	public void function testDeleteServer() {
-		variables.scopefacade = variables.scopefacade.init("server");
-		server.test = 1;
-		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(server,"test"));
-	}
-	
-	public void function testDeleteServerSubkey() {
-		variables.scopefacade = variables.scopefacade.init("server.test");
-		server.test.test = 1;
-		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(server.test,"test"));
-	}
-	
-	public void function testDeleteRequest() {
-		variables.scopefacade = variables.scopefacade.init("request");
-		request.test = 1;
-		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(request,"test"));
-	}
-	
-	public void function testDeleteRequestSubkey() {
-		variables.scopefacade = variables.scopefacade.init("request.test");
-		request.test.test = 1;
-		variables.scopefacade.delete("test");
-		assertFalse(structKeyExists(request.test,"test"));
+		assertFalse(structKeyExists(s.test,"test"));
 	}
 
 	// Param
 
-	public void function testParamSession() {
-		variables.scopefacade = variables.scopefacade.init("session");
-		session.test = 1;
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testParam(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope);
+		var s = structGet(arguments.scope);
+		s.test = 1;
 		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(session,"test") && session.test eq 1);
-		structDelete(session,"test");
+		assertTrue(structKeyExists(s,"test") && s.test eq 1);
+		structDelete(s,"test");
 		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(session,"test") && session.test eq 2);
+		assertTrue(structKeyExists(s,"test") && s.test eq 2);
 	}
 
-	public void function testParamSessionSubkey() {
-		variables.scopefacade = variables.scopefacade.init("session.test");
-		session.test.test = 1;
+	/**
+	* @mxunit:dataprovider scope_data
+	*/
+	public void function testParamSubkey(required string scope) {
+		variables.scopefacade = variables.scopefacade.init(arguments.scope & ".test");
+		var s = structGet(arguments.scope);
+		s.test.test = 1;
 		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(session.test,"test") && session.test.test eq 1);
-		structDelete(session.test,"test");
+		assertTrue(structKeyExists(s.test,"test") && s.test.test eq 1);
+		structDelete(s.test,"test");
 		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(session.test,"test") && session.test.test eq 2);
-	}
-
-	public void function testParamApplication() {
-		variables.scopefacade = variables.scopefacade.init("application");
-		application.test = 1;
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(application,"test") && application.test eq 1);
-		structDelete(application,"test");
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(application,"test") && application.test eq 2);
-	}
-
-	public void function testParamApplicationSubkey() {
-		variables.scopefacade = variables.scopefacade.init("application.test");
-		application.test.test = 1;
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(application.test,"test") && application.test.test eq 1);
-		structDelete(application.test,"test");
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(application.test,"test") && application.test.test eq 2);
-	}
-
-	public void function testParamServer() {
-		variables.scopefacade = variables.scopefacade.init("server");
-		server.test = 1;
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(server,"test") && server.test eq 1);
-		structDelete(server,"test");
-		variables.scopefacade.param("test","numeric",2);
-		debug(server);
-		assertTrue(structKeyExists(server,"test") && server.test eq 2);
-	}
-
-	public void function testParamServerSubkey() {
-		variables.scopefacade = variables.scopefacade.init("server.test");
-		server.test.test = 1;
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(server.test,"test") && server.test.test eq 1);
-		structDelete(server.test,"test");
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(server.test,"test") && server.test.test eq 2);
-	}
-
-	public void function testParamRequest() {
-		variables.scopefacade = variables.scopefacade.init("request");
-		request.test = 1;
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(request,"test") && request.test eq 1);
-		structDelete(request,"test");
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(request,"test") && request.test eq 2);
-	}
-
-	public void function testParamRequestSubkey() {
-		variables.scopefacade = variables.scopefacade.init("request.test");
-		request.test.test = 1;
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(request.test,"test") && request.test.test eq 1);
-		structDelete(request.test,"test");
-		variables.scopefacade.param("test","numeric",2);
-		assertTrue(structKeyExists(request.test,"test") && request.test.test eq 2);
+		assertTrue(structKeyExists(s.test,"test") && s.test.test eq 2);
 	}
 
 }
