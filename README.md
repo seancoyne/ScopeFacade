@@ -1,22 +1,19 @@
 [![Build Status](https://travis-ci.org/seancoyne/ScopeFacade.png)](https://travis-ci.org/seancoyne/ScopeFacade)
 
 # Scope Facade
-Author: [Sean Coyne](http://n42designs.com)
-
-Copyright 2014 and Beyond.  All Rights Reserved.
+[Sean Coyne](http://n42designs.com), Copyright 2014 and Beyond.  All Rights Reserved.
 
 Apache 2.0 License
 
-A simple ColdFusion facade to abstract a shared scope (session, application, server, request).
+A simple ColdFusion facade to abstract a shared scope (session, application, server, request). Useful in applications where you do not want to directly access the shared scope from services.
 
-Useful in applications where you do not want to directly access the shared scope from services.
+## Usage
 
 Call `init()` or `new ScopeFacade()` with the name of the scope you want to abstract.  You can also use subkeys of a scope, provided they are structs.
-You can abstract the Application, Session, Server, or Request scopes.
 
 ```cfml
 <cfscript>
- 	scopeFacade = new ScopeFacade("session");  // this would abstract the entire session scope
- 	scopeFacade = new ScopeFacade("session.userinfo"); // this would abstract only the "userinfo" key of the session scope;
+scopeFacade = new ScopeFacade("session");  // this would abstract the entire session scope
+scopeFacade = new ScopeFacade("session.userinfo"); // this would abstract only the "userinfo" key of the session scope;
 </cfscript>
 ```
