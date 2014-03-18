@@ -1,7 +1,7 @@
 component extends="mxunit.framework.TestCase" {
 
 	public void function setUp() {
-		variables.scopefacade = createObject("component","ScopeFacade.tag.ScopeFacade");
+		variables.scopefacade = createObject("component","ScopeFacade.ScopeFacade");
 		scope_data = ["session","application","request","server","session.test","application.test","request.test","server.test"];
 	}
 
@@ -20,7 +20,7 @@ component extends="mxunit.framework.TestCase" {
 	*/
 	public void function testInit(required string scope) {
 		variables.scopefacade = variables.scopefacade.init(arguments.scope);
-		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.tag.ScopeFacade"));
+		assert(isInstanceOf(variables.scopefacade,"ScopeFacade.ScopeFacade"));
 	}
 
 	// GetScope

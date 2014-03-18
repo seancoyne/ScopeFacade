@@ -2,3 +2,6 @@
 *.iml
 atlassian-ide-plugin.xml
 .idea
+mxunit
+tests/ci/results
+tests/ci/results/*
