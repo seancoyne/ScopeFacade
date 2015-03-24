@@ -1,3 +1,6 @@
 language: java
 install: ant install-ci-deps
 script: ant test-ci-railo
+notifications:
+  slack:
+    secure: i+59O4FKo1qGxzcZe1r2zku6QZjSNfJwq6cqA9yi3LLQBqt5txpepY9K1QW/f/8SX6s2ctIpHd4i1Wmm1G2A0UOCNhoUz74NtbRY6ajyk0dzcXaipLmRJjfb/WA5Dko4QaGl8I61rhkJ4ZWl9rXmxI073xtdv8Ga35AZUm59sRY=
